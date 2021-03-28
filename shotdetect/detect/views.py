@@ -3,6 +3,7 @@ import os
 from django.shortcuts import render, redirect
 import shutil
 import oss2
+import uuid
 
 # Create your views here.
 from detect.models import ResVideo
@@ -29,20 +30,27 @@ def upload(req):
     # bucket.put_object('motto.txt', 'Never give up. - Jack Ma')
 
     path = req.GET.get("path", None)
-    if(os.path.isfile(path)):
-        localUpload(path)
+    extraName = getExtra(path)
+    print(path)
+    if(os.path.exists(path)):
+        localUpload(path,bucket,extraName)
     else:
-        netUpload(path)
-    return render(req,"index.html",path)
+        netUpload(path,bucket,extraName)
+    return render(req,"index.html",{"path":path})
+
+# 获取图片扩展命
+def getExtra(path):
+    index = path.rindex(".")
+    return path[index:]
 
 # 本地图片上传
-def localUpload(path):
+def localUpload(path,bucket,extraName):
     file = open(path, 'r')
-
-    pass
+    fileName = uuid.uuid4()
+    bucket.put_object(str(fileName)+extraName, file)
 
 # 网络图片上传
-def netUpload(path):
+def netUpload(path,bucket,extraName):
     pass
 
 # 登录
@@ -73,14 +81,30 @@ def addVideo(req):
     director = req.POST.get("director")
     starts = req.POST.get("starts")
 
+    # 上传视频（暂未判断是否是视频文件）
+    file = open(path,'r')
+
+
     # 新增
     video = ResVideo()
-    video.path = path
+    # video.path = path
     video.name = name
     video.totalTime = totalTime
     video.allNumber = allNumber
     video.number = number
     video.director = director
     video.starts = starts
-    video.save()
-    return redirect()
+    cont = dict()
+    try:
+        video.save()
+        cont["msg"] = "添加成功！"
+        return render(req,"manage.html",cont)
+    except Exception as e:
+        print(e)
+        cont["msg"] = "添加失败！"
+        return render(req,"addVideo.html",cont)
+
+
+# 进入添加视频页面
+def add(req):
+    return render(req,"addVideo.html")

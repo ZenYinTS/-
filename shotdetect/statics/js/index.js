@@ -1,7 +1,4 @@
 $(function () {
-    //设置活动item
-
-
     // 搜索内容的显示
     refreshContent()
     

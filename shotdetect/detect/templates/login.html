@@ -22,18 +22,20 @@
 
     <!-- 中间内容 -->
     <div class="m-padded-tb-large m-opacity main">
-        <div class="ui container center aligned">
-            <h3 class="m-theme-color">目前只有管理员才可以进行资源上传！</h3>
-            <form action="/login/" method="post">
+        <div class="ui container">
+            <h3 class="m-white">目前只有管理员才可以进行资源上传！</h3>
+            <form class="ui form" method="post" action="/login/" style="width: 50%">
                 {% csrf_token %}    <!-- post请求需要设置跨域请求csrf_token，否则会报错forbidden -->
-                账号：<input type="text" class="ui input" name="account" placeholder="请输入账号" required>   <!--required表示非空不提交-->
-                <br/>
-                密码：<input type="password" name="password">
-                <br/>
-                <input type="submit" value="登录">
+                <div class="field">
+                    <label>账号</label>
+                    <input name="account" type="text" placeholder="请输入账号" required>
+                </div>
+                <div class="field">
+                    <label>密码</label>
+                    <input name="password" type="password">
+                </div>
+                <button class="ui teal button" type="submit" style="width: 100%">登录</button>
             </form>
-
-
         </div>
     </div>
     <br/>

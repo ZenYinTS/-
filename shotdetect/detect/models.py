@@ -6,7 +6,7 @@ class ResVideo(models.Model):
     # 属性定义
     path = models.CharField(max_length=500,unique=True)
     name = models.CharField(max_length=100)
-    totalTime = models.DateField()
+    totalTime = models.TimeField()
     allNumber = models.IntegerField()
     number = models.IntegerField()
     director = models.CharField(max_length=50)
