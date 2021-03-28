@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'header.html' %}
+    <title>识图搜剧</title>
+</head>
+
+<body>
+<div id="container">
+    <!--导航-->
+    {% include 'nav.html' %}
+
+    <div class="ui mini modal" style="display: none">
+        <div class="header">Header</div>
+        <div class="actions">
+            <div class="ui approve button">确定</div>
+        </div>
+    </div>
+
+    <!-- 中间内容 -->
+    <div class="m-padded-tb-large m-opacity main">
+        <div class="ui container">
+            <!-- 搜索栏 -->
+            <div class="ui center aligned basic segment">
+                <div class="ui left icon action input" style="width: 100% !important;">
+                    <input id="urlInput" type="text" placeholder="请选择要搜索的剧照（可以是网页图片url）"/>
+                    <input id="btnUpload" type="file" style="display: none">
+                    <div id="divUpload" class="ui teal submit button">
+                        本地上传
+                        <i class="folder open icon"></i>
+                    </div>
+                    <div id="btnSearch" class="ui blue submit button">搜索
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索内容（左右布局） -->
+            <div id="content" class="ui grid m-opacity" style="display: none">
+                <!-- 左侧 -->
+                <div class="five wide column">
+                    <div class="ui segments">
+                        <!-- 搜索图片 -->
+                        <div class="ui tertiary blue inverted secondary segment m-text-bold">
+                            您搜索的图片
+                        </div>
+                        <div class="ui center aligned segment">
+                            <img src="{% static "/images/icon.png" %}" alt="搜索图片预览" class="m-pic-preview">
+                        </div>
+                    </div>
+                    <div class="ui segments">
+                        <!-- 列举三个可能结果 -->
+                        <div class="ui tertiary blue inverted secondary segment m-text-bold">
+                            搜索结果
+                        </div>
+                        <div class="ui segment">
+                            <a href="">
+                                <div class="ui grid">
+                                    <div class="eight wide column">
+                                        剧名
+                                        <br/>
+                                        <br/>
+                                        集数
+                                        <br/>
+                                        <br/>
+                                        时间
+                                        <br/>
+                                        <br/>
+                                        相似度
+                                    </div>
+                                    <div class="eight wide column">
+                                        <img src="{% static "/images/icon.png" %}" alt="可能的关键帧1" class="m-pic-preview">
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <div class="eight wide column">
+                                    剧名
+                                    <br/>
+                                    <br/>
+                                    集数
+                                    <br/>
+                                    <br/>
+                                    时间
+                                    <br/>
+                                    <br/>
+                                    相似度
+                                </div>
+                                <div class="eight wide column">
+                                    <img src="{% static "/images/icon.png" %}" alt="可能的关键帧1" class="m-pic-preview">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <div class="eight wide column">
+                                    剧名
+                                    <br/>
+                                    <br/>
+                                    集数
+                                    <br/>
+                                    <br/>
+                                    时间
+                                    <br/>
+                                    <br/>
+                                    相似度
+                                </div>
+                                <div class="eight wide column">
+                                    <img src="{% static "/images/icon.png" %}" alt="可能的关键帧1" class="m-pic-preview">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 右侧 -->
+                <div class="eleven wide column">
+                    <!-- 显示最有可能的结果 -->
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <video src="" width="100%" height="90%" controls>
+
+                            </video>
+                        </div>
+                        <div class="ui segment">
+                            <h3>剧名</h3>
+                            <hr style="border:1px silver dotted"/>
+                            <br/>
+                            相似度：
+                            <br/>
+                            <br/>
+                            导演：
+                            <br/>
+                            <br/>
+                            主演：
+                            <br/>
+                            <br/>
+                            总集数：
+                            <br/>
+                            <br/>
+                            所在集数：
+                            <br/>
+                            <br/>
+                            所在时间：
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <br/>
+    <br/>
+
+    <!-- 底部footer -->
+    {% include 'footer.html' %}
+</div>
+
+{% include 'script.html' %}
+<script src="{% static "/js/index.js" %}"></script>
+
+</body>
+
+</html>

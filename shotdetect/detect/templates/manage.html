@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'header.html' %}
+    <title>资源上传</title>
+</head>
+
+<body>
+<div id="container">
+    <!--导航-->
+    {% include 'nav.html' %}
+
+    <div class="ui mini modal" style="display: none">
+        <div class="header">账号密码有误！请重新输入！</div>
+        <div class="actions">
+            <div class="ui approve button">确定</div>
+        </div>
+    </div>
+
+    <!-- 中间内容 -->
+    <div class="m-padded-tb-large m-opacity main">
+        <div class="ui container">
+            <div class="ui two column grid">
+                <a href="/manage/add" class="column m-column">
+                    <div class="ui segment m-segment">
+                        <i class="cloud upload icon"></i>
+                        上传视频
+                    </div>
+                </a>
+                <a href="/manage/update" class="column m-column">
+                    <div class="ui segment m-segment">
+                        <i class="edit icon"></i>
+                        更新视频
+                    </div>
+                </a>
+                <a href="/manage/remove" class="column m-column">
+                    <div class="ui segment m-segment">
+                        <i class="trash alternate icon"></i>
+                        删除视频
+                    </div>
+                </a>
+                <a href="/manage/list" class="column">
+                    <div class="ui segment m-segment">
+                        <i class="search icon"></i>
+                        查找视频
+                    </div>
+                </a>
+            </div>
+
+
+        </div>
+    </div>
+    <br/>
+    <br/>
+
+    <!-- 底部footer -->
+    {% include 'footer.html' %}
+</div>
+
+{% include 'script.html' %}
+
+</body>
+
+</html>

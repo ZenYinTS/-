@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'header.html' %}
+    <title>登录</title>
+
+</head>
+
+<body>
+<div id="container">
+    <!--导航-->
+    {% include 'nav.html' %}
+
+    <div class="ui mini modal" style="display: none">
+        <div class="header">账号密码有误！请重新输入！</div>
+        <div class="actions">
+            <div class="ui approve button">确定</div>
+        </div>
+    </div>
+
+    <!-- 中间内容 -->
+    <div class="m-padded-tb-large m-opacity main">
+        <div class="ui container center aligned">
+            <h3 class="m-theme-color">目前只有管理员才可以进行资源上传！</h3>
+            <form action="/login/" method="post">
+                {% csrf_token %}    <!-- post请求需要设置跨域请求csrf_token，否则会报错forbidden -->
+                账号：<input type="text" class="ui input" name="account" placeholder="请输入账号" required>   <!--required表示非空不提交-->
+                <br/>
+                密码：<input type="password" name="password">
+                <br/>
+                <input type="submit" value="登录">
+            </form>
+
+
+        </div>
+    </div>
+    <br/>
+    <br/>
+
+    <!-- 底部footer -->
+    {% include 'footer.html' %}
+</div>
+
+{% include 'script.html' %}
+
+</body>
+
+</html>
