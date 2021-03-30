@@ -23,22 +23,23 @@
     <div class="m-padded-tb-large m-opacity main">
         <div class="ui container">
             <!-- 搜索栏 -->
-            <div class="ui center aligned basic segment">
-                <div class="ui left icon action input" style="width: 100% !important;">
-                    <input id="urlInput" type="text" placeholder="请选择要搜索的剧照（可以是网页图片url）"/>
-                    <input id="btnUpload" type="file" style="display: none">
-                    <div id="divUpload" class="ui teal submit button">
-                        本地上传
-                        <i class="folder open icon"></i>
-                    </div>
-                    <div id="btnSearch" class="ui blue submit button">搜索
-                        <i class="search icon"></i>
-                    </div>
+            <form class="ui form" action="/search/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input id="urlInput" type="text" name="picName" placeholder="请选择要搜索的剧照（可以是网页图片url）" value="{{ picName }}"/>
+                <input id="btnUpload" type="file" name="picture" style="display: none" accept="image/png,image/jpg,image/jpeg">
+                <div id="divUpload" class="ui teal submit button">
+                    本地上传
+                    <i class="folder open icon"></i>
                 </div>
-            </div>
+                <button type="submit" id="btnSearch" class="ui blue submit button">搜索
+                    <i class="search icon"></i>
+                </button>
+
+            </form>
 
             <!-- 搜索内容（左右布局） -->
-            <div id="content" class="ui grid m-opacity" style="display: none">
+            {% if picture %}
+            <div id="content" class="ui grid m-opacity">
                 <!-- 左侧 -->
                 <div class="five wide column">
                     <div class="ui segments">
@@ -47,7 +48,7 @@
                             您搜索的图片
                         </div>
                         <div class="ui center aligned segment">
-                            <img src="{% static "/images/icon.png" %}" alt="搜索图片预览" class="m-pic-preview">
+                            <img src="{{ path }}" alt="搜索图片预览" class="m-pic-preview">
                         </div>
                     </div>
                     <div class="ui segments">
@@ -149,6 +150,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
 
 
         </div>

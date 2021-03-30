@@ -20,7 +20,7 @@ from detect import views as dViews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', dViews.index),
-    path('upload/',dViews.upload),
+    path('search/',dViews.search),
     path('login/',dViews.login),
     path('manage/', dViews.manage),
     path('manage/add/', dViews.addVideo),

@@ -12,13 +12,14 @@ from detect.models import ResVideo
 def index(req):
     return render(req,"index.html")
 
-def upload(req):
+def search(req):
     # 首先初始化AccessKeyId、AccessKeySecret、Endpoint等信息。
     # 分别以HTTP、HTTPS协议访问。
     access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID', 'LTAI5tKgEGr2SbjzHiG6KKSF')
     access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET', 'Y2JUwuBaj5FL0n2r797v8xQhWx3Esx')
     bucket_name = os.getenv('OSS_TEST_BUCKET', 'zenyints')
     endpoint = os.getenv('OSS_TEST_ENDPOINT', 'oss-cn-beijing.aliyuncs.com')
+    access_link = "https://zenyints.oss-cn-beijing.aliyuncs.com/"
 
     # 确认上面的参数都填写正确了
     for param in (access_key_id, access_key_secret, bucket_name, endpoint):
@@ -29,14 +30,11 @@ def upload(req):
 
     # bucket.put_object('motto.txt', 'Never give up. - Jack Ma')
 
-    path = req.GET.get("path", None)
-    extraName = getExtra(path)
-    print(path)
-    if(os.path.exists(path)):
-        localUpload(path,bucket,extraName)
-    else:
-        netUpload(path,bucket,extraName)
-    return render(req,"index.html",{"path":path})
+    picName = req.POST.get("picName", None)
+    picture = req.FILES.get("picture", None)
+    fileName = upload(picName,picture,bucket)    # 上传图片，获取图片在oss中的文件名
+    path = access_link + fileName    # 图片访问路径
+    return render(req,"index.html",{"picName":picName,"picture":picture,"path":path})
 
 # 获取图片扩展命
 def getExtra(path):
@@ -44,14 +42,12 @@ def getExtra(path):
     return path[index:]
 
 # 本地图片上传
-def localUpload(path,bucket,extraName):
-    file = open(path, 'r')
-    fileName = uuid.uuid4()
-    bucket.put_object(str(fileName)+extraName, file)
+def upload(picName,picture,bucket):
+    extraName = getExtra(picName)
+    fileName = str(uuid.uuid4())+extraName
+    bucket.put_object(fileName, picture)
+    return fileName
 
-# 网络图片上传
-def netUpload(path,bucket,extraName):
-    pass
 
 # 登录
 def login(req):
