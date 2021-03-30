@@ -34,7 +34,13 @@ def search(req):
     picture = req.FILES.get("picture", None)
     fileName = upload(picName,picture,bucket)    # 上传图片，获取图片在oss中的文件名
     path = access_link + fileName    # 图片访问路径
-    return render(req,"index.html",{"picName":picName,"picture":picture,"path":path})
+
+    # 查询结果
+    result = dict()
+    # 查找三个最相似的剧集
+
+
+    return render(req,"index.html",{"picName":picName,"picture":picture,"path":path,"result":result})
 
 # 获取图片扩展命
 def getExtra(path):
