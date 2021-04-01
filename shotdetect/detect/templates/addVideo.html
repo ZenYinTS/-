@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +8,40 @@
 <body>
 <div id="container">
     {% include 'nav.html' %}
+
+    {#  模态框，提示上传结果 #}
+    <div class="ui mini modal" style="display: none">
+        <div class="header">Header</div>
+        <div class="actions">
+            <div class="ui approve button">确定</div>
+        </div>
+    </div>
+
     <div class="m-padded-tb-large m-opacity main">
         <div class="ui container">
             <form class="ui form" method="post" action="/manage/add/">
                 {% csrf_token %}    <!-- post请求需要设置跨域请求csrf_token，否则会报错forbidden -->
                 <div class="field">
                     <label>视频地址</label>
-                    <input id="btnFileInput" type="file" style="display: none">
-                    <input id="fileInput" name="path" type="text" placeholder="从本地选择视频" readonly required>
+                    <input id="btnFileInput" type="file" style="display: none" accept="video/mp4">
+                    <input id="fileInput" type="text" placeholder="从本地选择视频" readonly required>
+                    <input type="hidden" name="path">
+                    <div class="ui mini icon message" id="msgUploading" style="display: none">
+                        <i class="mini notched circle loading icon"></i>
+                        <div class="content">
+                            <div class="header">
+                                正在上传...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui mini message" style="display: none" id="msgUploadResult">
+                        <div class="header">
+                            上传结果
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <input type="hidden" name="totalTime" required>
                 </div>
                 <div class="field">
                     <label>剧名</label>
@@ -29,11 +56,6 @@
                     <input type="text" name="starts">
                 </div>
                 <div class="field">
-                    <label>总时长</label>
-
-                    <input type="text" name="totalTime" placeholder="格式(99:99:99)" required>
-                </div>
-                <div class="field">
                     <label>全集数</label>
                     <input type="text" name="allNumber" placeholder="只能是数字" required>
                 </div>
@@ -41,12 +63,9 @@
                     <label>所在集数</label>
                     <input type="text" name="number" placeholder="只能是数字" required>
                 </div>
-                <button class="ui teal button" type="submit">上传</button>
-                <button class="ui button" type="reset">重置</button>
+                <button class="ui teal button" type="submit" id="btnSubmit" disabled>上传</button>
+                <button class="ui button" type="reset" id="btnReset" disabled>重置</button>
             </form>
-            <div class="field">
-                <label>{{ msg }}</label>
-            </div>
         </div>
     </div>
 
@@ -54,17 +73,6 @@
 </div>
 
 {% include 'script.html' %}
-<script>
-    $("#fileInput").click(function () {
-        $("#btnFileInput").click()
-    })
-    $("#btnFileInput").bind('change', function () {
-        var file = $(this).val();
-        //alert(file);
-        if (file.length > 0) {
-            $("#fileInput").val(file)
-        }
-    })
-</script>
+<script src="{% static "/js/addVideo.js" %}"></script>
 </body>
 </html>

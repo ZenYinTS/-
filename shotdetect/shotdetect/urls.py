@@ -25,4 +25,5 @@ urlpatterns = [
     path('manage/', dViews.manage),
     path('manage/add/', dViews.addVideo),
     path('add/', dViews.add),
+    path('manage/uploadVideo/', dViews.uploadVideo),
 ]
