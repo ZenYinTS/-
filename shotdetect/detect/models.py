@@ -11,6 +11,7 @@ class ResVideo(models.Model):
     number = models.IntegerField()
     director = models.CharField(max_length=50)
     starts = models.CharField(max_length=500)
+    h5Path = models.CharField(max_length=500,unique=True)
 
     class Meta:
         db_table = 'resvideo'    # 自定义表名

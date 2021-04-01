@@ -10,7 +10,8 @@ from oss2.models import PartInfo
 import json
 
 # Create your views here.
-from detect import frameOperation
+from detect.FrameOperation import extractFrames
+from detect.VGGAnalyze import analyze
 from detect.models import ResVideo
 
 
@@ -34,8 +35,6 @@ def search(req):
     for param in (access_key_id, access_key_secret, bucket_name, endpoint):
         assert '<' not in param, '请设置参数：' + param
 
-    # bucket.put_object('motto.txt', 'Never give up. - Jack Ma')
-
     picName = req.POST.get("picName", None)
     picture = req.FILES.get("picture", None)
     fileName = upload(picName,picture)    # 上传图片，获取图片在oss中的文件名
@@ -55,15 +54,13 @@ def getExtra(path):
 # 本地文件上传
 def upload(name,file):
     extraName = getExtra(name)
-    fileName = str(uuid.uuid4())+extraName
+    fileName = "pic/" + str(uuid.uuid4())+extraName
     bucket.put_object(fileName, file)
     return fileName
 
 
 # 登录
 def login(req):
-    # if req.session.get("user") == "admin":
-    #     return render(req, "manage.html")
     account = req.POST.get("account", None)
     password = req.POST.get("password", None)
     if account == "admin" and password == "zengying":
@@ -89,10 +86,10 @@ def addVideo(req):
     starts = req.POST.get("starts")
 
     # 关键帧提取保存在frames目录下
-    frameOperation.extractFrames(path)
+    extractFrames(path)
 
     # 训练模型保存
-
+    h5Path = analyze(path,access_link,bucket)
 
     # 新增
     video = ResVideo()
@@ -103,14 +100,17 @@ def addVideo(req):
     video.number = number
     video.director = director
     video.starts = starts
+    video.h5Path = h5Path
     cont = dict()
     try:
+        if h5Path == "":
+            raise Exception("建模失败！")
         video.save()
         cont["msg"] = "添加成功！"
         return render(req,"manage.html",cont)
     except Exception as e:
-        print(e)
-        cont["msg"] = "添加失败！"
+        print(e.args)
+        cont["msg"] = "添加失败！\n" + e.args[0]
         return render(req,"addVideo.html",cont)
 
 
@@ -138,7 +138,7 @@ def uploadVideo(req):
     file_obj = req.FILES.get('file_obj')
     # 上传文件到对象服务器
     extraName = getExtra(fileName)
-    fileName = str(uuid.uuid4()) + extraName
+    fileName = "movies/" + str(uuid.uuid4()) + extraName
     uploadVideoMethod(fileName,file_obj)
     # 视频URL
     path = access_link + fileName

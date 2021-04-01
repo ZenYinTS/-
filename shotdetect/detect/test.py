@@ -1,1 +1,1 @@
-# coding: GB2312  
+# coding: GB2312
