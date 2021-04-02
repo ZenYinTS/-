@@ -1,22 +1,21 @@
 {% load static %}
 <nav class="ui segment attached m-padded-tb m-opacity-mini m-shadow-small">
     <!-- 设计logo，太靠前，将菜单容器放入容器内 -->
-    <div class="ui m-container m-margin-tb">
-        <!-- 指定为菜单项item,m-item无意义，为了后续获取 -->
+    <div class="ui m-container">
         <div class="ui inverted secondary menu">
-            <a href="/"><h1 class="ui m-theme-color header item">
+            <a href="/"><h1 class="m-theme-color ui header item">
                 <img alt="logo" src="{% static "/images/icon.png" %}"
                      style="width: 50px !important;height: 50px !important;">
                 &nbsp; 识图搜剧
             </h1></a>
-            <a href="/">
-                <div class="ui item m-theme-color m-item">
+            <a href="/" class="ui item">
+                <div class="m-theme-color m-item">
                     <i class="search icon m-margin-lr-small"></i>
                     &nbsp; 搜剧
                 </div>
             </a>
-            <a href="/manage">
-                <div class="ui item m-theme-color m-item">
+            <a href="/manage" class="ui item">
+                <div class="m-theme-color m-item">
                     <i class="upload icon m-margin-lr-small"></i>
                     &nbsp; 资源管理
                 </div>

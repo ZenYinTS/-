@@ -52,10 +52,8 @@ i{
 
 /* --------------- menu ------------------- */
 .m-item{
-    text-align: center !important;
     font-size: larger !important;
-    color: red !important;
-    margin: auto 0 !important;
+    font-weight: bolder !important;
 }
 
 

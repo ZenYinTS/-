@@ -23,28 +23,6 @@ $(function () {
         }
     })
 
-    //搜索按钮事件
-    // btnSearch.click(function () {
-    //     var url = urlInput.val().trim()
-    //     if (url === "") {
-    //         $(".ui.mini.modal>.header").text("url不可为空！")
-    //         $(".ui.mini.modal").modal('show')
-    //     }
-    //     else {
-    //         if (isPic(url)){
-    //             //从数据库查找三种可能结果，更新面板
-    //
-    //             //显示查询结果
-    //             $("#content").show()
-    //         }else {
-    //             $(".ui.mini.modal>.header").text("url非法！请输入图片url！")
-    //             $(".ui.mini.modal").modal('show')
-    //             $("#content").hide()
-    //         }
-    //     }
-    //
-    // })
-
 })
 
 function refreshContent(){

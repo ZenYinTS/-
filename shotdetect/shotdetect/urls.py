@@ -23,7 +23,8 @@ urlpatterns = [
     path('search/',dViews.search),
     path('login/',dViews.login),
     path('manage/', dViews.manage),
-    path('manage/add/', dViews.addVideo),
-    path('add/', dViews.add),
+    path('manage/add/', dViews.add),
+    path('add/', dViews.addVideo),
     path('manage/uploadVideo/', dViews.uploadVideo),
+    path('manage/list/', dViews.manageList),
 ]

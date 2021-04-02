@@ -19,13 +19,14 @@
 
     <div class="m-padded-tb-large m-opacity main">
         <div class="ui container">
-            <form class="ui form" method="post" action="/manage/add/">
+            <form class="ui form" method="post" action="/add/">
                 {% csrf_token %}    <!-- post请求需要设置跨域请求csrf_token，否则会报错forbidden -->
                 <div class="field">
                     <label>视频地址</label>
                     <input id="btnFileInput" type="file" style="display: none" accept="video/mp4">
                     <input id="fileInput" type="text" placeholder="从本地选择视频" readonly required>
                     <input type="hidden" name="path">
+                    <input type="hidden" name="uploadID">
                     <div class="ui mini icon message" id="msgUploading" style="display: none">
                         <i class="mini notched circle loading icon"></i>
                         <div class="content">

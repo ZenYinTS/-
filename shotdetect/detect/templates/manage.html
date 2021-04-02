@@ -1,4 +1,5 @@
 {% load static %}
+{% load calcNum %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,41 +23,86 @@
     <!-- 中间内容 -->
     <div class="m-padded-tb-large m-opacity main">
         <div class="ui container">
-            <div class="ui two column grid">
-                <a href="/add" class="column m-column">
-                    <div class="ui segment m-segment">
-                        <i class="cloud upload icon"></i>
-                        上传视频
-                    </div>
-                </a>
-                <a href="/update" class="column m-column">
-                    <div class="ui segment m-segment">
-                        <i class="edit icon"></i>
-                        更新视频
-                    </div>
-                </a>
-                <a href="/remove" class="column m-column">
-                    <div class="ui segment m-segment">
-                        <i class="trash alternate icon"></i>
-                        删除视频
-                    </div>
-                </a>
-                <a href="/list" class="column">
-                    <div class="ui segment m-segment">
-                        <i class="search icon"></i>
-                        查找视频
-                    </div>
-                </a>
+            <!--不使用form，采用div，在搜索时进行局部渲染-->
+            <div class="ui form segment">
+                <!--                创建隐含域，存放page参数-->
+                <input type="hidden" name="page"/>
+                <div class="ui fluid action input">
+                    <a class="ui teal button" href="/manage/add">添加视频</a>
+                    <div style="width: 100px"></div>
+                    <input type="text" placeholder="剧名 / 视频位置">
+                    <div class="ui blue button">搜索</div>
+                </div>
             </div>
 
+            <div id="table-container">
+                <table class="ui table celled">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>剧名</th>
+                        <th>导演</th>
+                        <th>主角</th>
+                        <th>时长</th>
+                        <th>集数</th>
+                        <th>模型位置</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for video in videos %}
+                        <tr>
+                            <td>{{ forloop.counter | calcNum:videos.number }}</td>
+                            <td>{{ video.name }}</td>
+                            <td>{{ video.director }}</td>
+                            <td>{{ video.starts }}</td>
+                            <td>{{ video.totalTime|date:'H:i:s' }}</td>
+                            <td>{{ video.number }} / {{ video.allNumber }}</td>
+                            <td>{{ video.h5Path }}</td>
 
+                            <td>
+                                <a href="#" href="/manage/edit/{{ video.uploadID }}"
+                                   class="mini basic ui teal button">编辑</a>
+                                <a href="#" href="/manage/remove/{{ video.uploadID }}"
+                                   class="mini basic ui red button">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                    <tfoot>
+                    <th colspan="8">
+                        <div class="ui secondary menu">
+                            {% if videos.has_previous %}
+                                <a href="?page={{ videos.previous_page_number }}"
+                                   class="ui blue basic item button">上一页</a>
+                            {% endif %}
+
+
+                            <div class="item">
+                                {{ videos.number }}&nbsp;页&nbsp;&nbsp;/&nbsp;&nbsp;共&nbsp;{{ videos.paginator.num_pages }}&nbsp;页
+                            </div>
+
+                            {% if videos.has_next %}
+                                <a href="?page={{ videos.next_page_number }}"
+                                   class="ui item blue basic button">下一页</a>
+                            {% endif %}
+                        </div>
+
+                    </th>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
-    <br/>
-    <br/>
+    <br>
+    <br>
+</div>
+<br/>
+<br/>
 
-    <!-- 底部footer -->
-    {% include 'footer.html' %}
+<!-- 底部footer -->
+{% include 'footer.html' %}
 </div>
 
 {% include 'script.html' %}

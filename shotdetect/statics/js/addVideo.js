@@ -36,9 +36,10 @@ $("#btnFileInput").bind('change', function () {
             // 设置窗口不可见
             $("#msgUploading").hide()
 
-            // 设置时长和路径
+            // 设置时长\路径\uploadID
             $("[name='totalTime']").val(res.file_time)
             $("[name='path']").val(res.path)
+            $("[name='uploadID']").val(res.uploadID)
 
             // 设置按钮可用
             $("#btnSubmit").attr('disabled', false)

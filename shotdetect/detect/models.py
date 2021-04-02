@@ -4,6 +4,7 @@ from django.db import models
 class ResVideo(models.Model):
     '视频基本信息'
     # 属性定义
+    uploadID = models.CharField(max_length=200,primary_key=True)
     path = models.CharField(max_length=500,unique=True)
     name = models.CharField(max_length=100)
     totalTime = models.TimeField()
@@ -12,6 +13,7 @@ class ResVideo(models.Model):
     director = models.CharField(max_length=50)
     starts = models.CharField(max_length=500)
     h5Path = models.CharField(max_length=500,unique=True)
+    addTime = models.DateTimeField()
 
     class Meta:
         db_table = 'resvideo'    # 自定义表名
