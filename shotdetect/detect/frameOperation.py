@@ -1,4 +1,8 @@
 import os, re
+import uuid
+
+ffmpeg = "statics\\ffmpeg-4.3.1\\bin\\ffmpeg.exe"
+
 
 # 获取图片扩展名
 def getExtra(path):
@@ -16,7 +20,6 @@ def execCmd(cmd):
 def extractFrames(path,uploadID):
     # 创建文件夹
     os.mkdir("detect/frames/"+uploadID)
-    ffmpeg = "statics\\ffmpeg-4.3.1\\bin\\ffmpeg.exe"
     cmd = ffmpeg + " -i  " + path + " -vf select='eq(pict_type\\,PICT_TYPE_I)' -vsync 2 detect\\frames\\"+uploadID+"\\keyframe-%d.jpg -loglevel debug 2>&1"
     # print(cmd)
     result = execCmd(cmd)
@@ -27,3 +30,10 @@ def extractFrames(path,uploadID):
         cmd = "rename detect\\frames\\"+ uploadID +"\\keyframe-"+str(i)+".jpg "+times[i-1]+".jpg"
         execCmd(cmd)
     print("已完成重命名！")
+
+# 截图保存，返回截图路径
+def shotSave(path,shotTime):
+    print("---------------------- result shot ------------------------")
+    fileName = "/shot/" + str(uuid.uuid4()) + ".jpg"
+    execCmd(ffmpeg + " -i "+ path +" -ss "+ str(shotTime) +" -vframes 1 statics"+fileName)
+    return fileName

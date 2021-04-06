@@ -11,20 +11,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='ResVideo',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('path', models.CharField(max_length=500, unique=True)),
-                ('name', models.CharField(max_length=100)),
-                ('totalTime', models.DateField()),
-                ('allNumber', models.IntegerField()),
-                ('number', models.IntegerField()),
-                ('director', models.CharField(max_length=50)),
-                ('starts', models.CharField(max_length=500)),
-            ],
-            options={
-                'db_table': 'resvideo',
-            },
-        ),
+
     ]

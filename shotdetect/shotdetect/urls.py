@@ -16,15 +16,32 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from detect import views as dViews
+from detect.video import videoViews as vViews
+from detect.series import seriesViews as sViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', dViews.index),
     path('search/',dViews.search),
+    path('search/show/',dViews.showResult),
     path('login/',dViews.login),
-    path('manage/', dViews.manage),
-    path('manage/add/', dViews.add),
-    path('add/', dViews.addVideo),
-    path('manage/uploadVideo/', dViews.uploadVideo),
-    path('manage/list/', dViews.manageList),
+    path('manage/', vViews.manage),
+    path('videoManage/', vViews.videoManageList),
+    path('videoManage/add', vViews.videoAdd),
+    path('videoAdd/', vViews.addVideo),
+    path('videoManage/uploadVideo/', vViews.uploadVideo),
+    path('videoManage/list/', vViews.videoManageList),
+    path('videoManage/edit/', vViews.videoEdit),
+    path('videoEdit/', vViews.editVideo),
+    path('videoManage/remove/', vViews.deleteVideo),
+    path('videoManage/search/', vViews.searchVideo),
+    path('seriesManage/', sViews.seriesManageList),
+    path('seriesManage/add', sViews.seriesAdd),
+    path('seriesAdd/', sViews.addSeries),
+    path('seriesManage/list/', sViews.seriesManageList),
+    path('seriesManage/edit/', sViews.seriesEdit),
+    path('seriesEdit/', sViews.editSeries),
+    path('seriesManage/remove/', sViews.deleteSeries),
+    path('seriesManage/search/', sViews.searchSeries),
+
 ]

@@ -65,9 +65,9 @@ def searchForQuery(queryPath):
             frame_name = bytes.decode(imgNames[index])
             frame_extra = getExtra(frame_name)
             frame_time = float(str.replace(frame_name,frame_extra,""))
-            similarArr.append({"uploadID":uploadID,"frame_time":frame_time ,"imgScore":rank_score[0:maxres][i]})
+            similarArr.append({"uploadID":uploadID,"frame_time":frame_time ,"imgScore":rank_score[i]})
 
     # 从所有相似中筛选出三个最相似的
-    similarArr.sort(key=lambda x: x["imgScore"])
+    similarArr.sort(key=lambda x: -x["imgScore"])
     # print(similarArr)
     return similarArr[0:3]

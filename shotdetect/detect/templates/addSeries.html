@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'header.html' %}
+    <title>添加电视剧</title>
+</head>
+<body>
+<div id="container">
+    {% include 'nav.html' %}
+    <!-- 二级导航 -->
+    <div class="ui menu m-opacity-mini attached pointing">
+        <div class="ui container">
+            <div class="right menu">
+                <a href="/seriesManage" class="active m-theme-color item">电视剧管理</a>
+                <a href="/videoManage" class="item">视频管理</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-padded-tb-large m-opacity main">
+        <div class="ui container">
+            <form class="ui form" method="post" action="/{{ op }}/">
+                {% csrf_token %}    <!-- post请求需要设置跨域请求csrf_token，否则会报错forbidden -->
+                <input type="hidden" name="sID" value="{{ series_obj.sID }}">
+                <div class="required field">
+                    <label>剧名</label>
+                    <input type="text" name="name" placeholder="剧名" required value="{{ series_obj.name }}">
+                </div>
+                <div class="field">
+                    <label>导演</label>
+                    <input type="text" name="director" placeholder="导演" required value="{{ series_obj.director }}">
+                </div>
+                <div class="field">
+                    <label>主演</label>
+                    <input type="text" name="starts" placeholder="主演" required value="{{ series_obj.starts }}">
+                </div>
+                <div class="field">
+                    <label>全集数</label>
+                    <input type="text" name="allNumber" placeholder="只能是数字" required value="{{ series_obj.allNumber }}">
+                </div>
+                <button class="ui teal button" type="submit" id="btnSubmit">保存</button>
+                <button class="ui button" type="reset" id="btnReset">重置</button>
+            </form>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+</div>
+
+{% include 'script.html' %}
+
+</body>
+</html>

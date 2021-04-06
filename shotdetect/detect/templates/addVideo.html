@@ -8,6 +8,15 @@
 <body>
 <div id="container">
     {% include 'nav.html' %}
+    <!-- 二级导航 -->
+    <div class="ui menu m-opacity-mini attached pointing">
+        <div class="ui container">
+            <div class="right menu">
+                <a href="/seriesManage" class="item">电视剧管理</a>
+                <a href="/videoManage" class="active m-theme-color item">视频管理</a>
+            </div>
+        </div>
+    </div>
 
     {#  模态框，提示上传结果 #}
     <div class="ui mini modal" style="display: none">
@@ -19,14 +28,42 @@
 
     <div class="m-padded-tb-large m-opacity main">
         <div class="ui container">
-            <form class="ui form" method="post" action="/add/">
+            <form class="ui form" method="post" action="/{{ op }}/">
                 {% csrf_token %}    <!-- post请求需要设置跨域请求csrf_token，否则会报错forbidden -->
+                <div class="required field">
+                    <div class="ui left labeled input action">
+                        <label class="ui compact blue basic label">剧名</label>
+                        <div class="ui fluid search selection dropdown">
+                            <input type="hidden" name="sID" value="{{ video_obj.sID }}"/>
+                            <i class="large dropdown icon"></i>
+                            <div class="default text">
+                                {% if video_obj.name != "" %}
+                                    {{ video_obj.name }}（{{ video_obj.director }}）
+                                {% else %}
+                                    剧名
+                                {% endif %}
+                            </div>
+                            <div class="menu">
+                                {% for s in allSeries %}
+                                    <div class="item" data-value="{{ s.sID }}">
+                                        {{ s.name }}（ {{ s.director }} ）
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
                 <div class="field">
                     <label>视频地址</label>
+                    <input type="hidden" name="path" value="{{ video_obj.path }}">    <!-- 视频路径 -->
+                    <input type="hidden" name="uploadID" value="{{ video_obj.uploadID }}">    <!-- 上传id -->
+                    <input type="hidden" name="vTime" required value="{{ video_obj.vTime }}">    <!-- 视频时长 -->
+
                     <input id="btnFileInput" type="file" style="display: none" accept="video/mp4">
-                    <input id="fileInput" type="text" placeholder="从本地选择视频" readonly required>
-                    <input type="hidden" name="path">
-                    <input type="hidden" name="uploadID">
+                    <input id="fileInput" type="text" placeholder="从本地选择视频" readonly required
+                           value="{{ video_obj.path }}">
                     <div class="ui mini icon message" id="msgUploading" style="display: none">
                         <i class="mini notched circle loading icon"></i>
                         <div class="content">
@@ -42,30 +79,16 @@
                     </div>
                 </div>
                 <div class="field">
-                    <input type="hidden" name="totalTime" required>
-                </div>
-                <div class="field">
-                    <label>剧名</label>
-                    <input type="text" name="name">
-                </div>
-                <div class="field">
-                    <label>导演</label>
-                    <input type="text" name="director">
-                </div>
-                <div class="field">
-                    <label>主演</label>
-                    <input type="text" name="starts">
-                </div>
-                <div class="field">
-                    <label>全集数</label>
-                    <input type="text" name="allNumber" placeholder="只能是数字" required>
-                </div>
-                <div class="field">
                     <label>所在集数</label>
-                    <input type="text" name="number" placeholder="只能是数字" required>
+                    <input type="text" name="number" placeholder="只能是数字" required value="{{ video_obj.number }}">
                 </div>
-                <button class="ui teal button" type="submit" id="btnSubmit" disabled>上传</button>
+            {% if op == "videoAdd" %}
+                <button class="ui teal button" type="submit" id="btnSubmit" disabled>保存</button>
                 <button class="ui button" type="reset" id="btnReset" disabled>重置</button>
+            {% else %}
+                <button class="ui teal button" type="submit" id="btnSubmit">保存</button>
+                <button class="ui button" type="reset" id="btnReset">重置</button>
+            {% endif %}
             </form>
         </div>
     </div>
@@ -75,5 +98,10 @@
 
 {% include 'script.html' %}
 <script src="{% static "/js/addVideo.js" %}"></script>
+<script>
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+</script>
 </body>
 </html>

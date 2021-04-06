@@ -5,7 +5,7 @@
 
 <head>
     {% include 'header.html' %}
-    <title>资源上传</title>
+    <title>电视剧管理</title>
 </head>
 
 <body>
@@ -13,25 +13,29 @@
     <!--导航-->
     {% include 'nav.html' %}
 
-    <div class="ui mini modal" style="display: none">
-        <div class="header">账号密码有误！请重新输入！</div>
-        <div class="actions">
-            <div class="ui approve button">确定</div>
+    <!-- 二级导航 -->
+    <div class="ui menu m-opacity-mini attached pointing">
+        <div class="ui container">
+            <div class="right menu">
+                <a href="/seriesManage" class="active m-theme-color item">电视剧管理</a>
+                <a href="/videoManage" class="item">视频管理</a>
+            </div>
         </div>
     </div>
-
     <!-- 中间内容 -->
     <div class="m-padded-tb-large m-opacity main">
         <div class="ui container">
-            <!--不使用form，采用div，在搜索时进行局部渲染-->
+
             <div class="ui form segment">
                 <!--                创建隐含域，存放page参数-->
                 <input type="hidden" name="page"/>
                 <div class="ui fluid action input">
-                    <a class="ui teal button" href="/manage/add">添加视频</a>
+                    <a class="ui teal button" href="/seriesManage/add">添加电视剧</a>
                     <div style="width: 100px"></div>
-                    <input type="text" placeholder="剧名 / 视频位置">
-                    <div class="ui blue button">搜索</div>
+                    <form action="/seriesManage/search" class="ui inline field">
+                        <input type="text" placeholder="剧名 / 导演" name="searchWords" value="{{ searchWords }}">
+                        <button class="ui blue button" type="submit">搜索</button>
+                    </form>
                 </div>
             </div>
 
@@ -43,27 +47,22 @@
                         <th>剧名</th>
                         <th>导演</th>
                         <th>主角</th>
-                        <th>时长</th>
-                        <th>集数</th>
-                        <th>模型位置</th>
+                        <th>全集数</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for video in videos %}
+                    {% for s in series %}
                         <tr>
-                            <td>{{ forloop.counter | calcNum:videos.number }}</td>
-                            <td>{{ video.name }}</td>
-                            <td>{{ video.director }}</td>
-                            <td>{{ video.starts }}</td>
-                            <td>{{ video.totalTime|date:'H:i:s' }}</td>
-                            <td>{{ video.number }} / {{ video.allNumber }}</td>
-                            <td>{{ video.h5Path }}</td>
-
+                            <td>{{ forloop.counter | calcNum:series.number }}</td>
+                            <td>{{ s.name }}</td>
+                            <td>{{ s.director }}</td>
+                            <td>{{ s.starts }}</td>
+                            <td>{{ s.allNumber }}</td>
                             <td>
-                                <a href="#" href="/manage/edit/{{ video.uploadID }}"
+                                <a href="/seriesManage/edit?sID={{ s.sID }}"
                                    class="mini basic ui teal button">编辑</a>
-                                <a href="#" href="/manage/remove/{{ video.uploadID }}"
+                                <a href="/seriesManage/remove?sID={{ s.sID }}"
                                    class="mini basic ui red button">删除</a>
                             </td>
                         </tr>
@@ -73,22 +72,25 @@
                     <tfoot>
                     <th colspan="8">
                         <div class="ui secondary menu">
-                            {% if videos.has_previous %}
-                                <a href="?page={{ videos.previous_page_number }}"
+                            {% if series.has_previous %}
+
+                                <a href="?searchWords={{ searchWords }}&page={{ series.previous_page_number }}"
                                    class="ui blue basic item button">上一页</a>
+
                             {% endif %}
 
 
                             <div class="item">
-                                {{ videos.number }}&nbsp;页&nbsp;&nbsp;/&nbsp;&nbsp;共&nbsp;{{ videos.paginator.num_pages }}&nbsp;页
+                                {{ series.number }}&nbsp;页&nbsp;&nbsp;/&nbsp;&nbsp;共&nbsp;{{ series.paginator.num_pages }}&nbsp;页
                             </div>
 
-                            {% if videos.has_next %}
-                                <a href="?page={{ videos.next_page_number }}"
-                                   class="ui item blue basic button">下一页</a>
+                            {% if series.has_next %}
+
+                                <a href="?searchWords={{ searchWords }}&page={{ series.next_page_number }}"
+                                   class="ui blue basic item button">下一页</a>
+
                             {% endif %}
                         </div>
-
                     </th>
                     </tfoot>
                 </table>
@@ -103,10 +105,8 @@
 
 <!-- 底部footer -->
 {% include 'footer.html' %}
-</div>
 
 {% include 'script.html' %}
-
 </body>
 
 </html>

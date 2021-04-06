@@ -36,18 +36,37 @@ function refreshContent(){
     }
 }
 
-//判断是否是图片
-function isPic(url) {
-    //- strFilter必须是小写列举
-    var strFilter=".jpeg|.jpg|.png|"
-    if(url.indexOf(".")>-1)
-    {
-        var p = url.lastIndexOf(".");
-        var strPostfix=url.substring(p,url.length) + '|';
-        strPostfix = strPostfix.toLowerCase();
-        if(strFilter.indexOf(strPostfix)>-1)
-            return true;
+$(".m-result").click(function () {
+    var formdata = new FormData()
+    console.log($("#resVideo").val())
+    formdata.append('resVal',$("#resVideo").val())
+    formdata.append('csrfmiddlewaretoken', $('[name=csrfmiddlewaretoken]').val())
 
-    }
-    return false;
-}
+    $.ajax({
+        url:"/search/show/",
+        type:"post",
+        data:formdata,
+        processData: false, //加入这属性    processData默认为true，为true时，提交不会序列化data
+        contentType: false,    // 不设置内容类型
+        success:function (res) {
+            console.log(res)
+            var myVideo = document.getElementById("myVideo")
+            myVideo.setAttribute("src",res.src)
+            //添加视频准备完成后的回调函数
+            console.log("-------------  开始自动播放  -------------")
+            myVideo.currentTime=res.frame_time;		    //跳转
+            myVideo.play();            			//自动播放
+
+            $("#name").text(res.name)
+            $("#similar").text(res.similar)
+            $("#director").text(res.director)
+            $("#starts").text(res.starts)
+            $("#allNumber").text(res.allNumber)
+            $("#number").text(res.number)
+            $("#sTime").text(res.sTime)
+
+        }
+
+
+    })
+})

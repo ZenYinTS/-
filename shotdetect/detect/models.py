@@ -1,19 +1,28 @@
 from django.db import models
 
 # Create your models here.
-class ResVideo(models.Model):
-    '视频基本信息'
+class tSeries(models.Model):
+    '电视剧基本信息'
     # 属性定义
-    uploadID = models.CharField(max_length=200,primary_key=True)
-    path = models.CharField(max_length=500,unique=True)
+    sID = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    totalTime = models.TimeField()
-    allNumber = models.IntegerField()
-    number = models.IntegerField()
     director = models.CharField(max_length=50)
     starts = models.CharField(max_length=500)
-    h5Path = models.CharField(max_length=500,unique=True)
-    addTime = models.DateTimeField()
+    allNumber = models.IntegerField()
 
     class Meta:
-        db_table = 'resvideo'    # 自定义表名
+        db_table = 'tSeries'    # 自定义表名
+
+class tVideo(models.Model):
+    '视频基本信息'
+    # 属性定义
+    uploadID = models.CharField(max_length=100,primary_key=True)
+    sID = models.ForeignKey(tSeries,on_delete=models.CASCADE)
+    number = models.IntegerField()
+    h5Path = models.CharField(max_length=255,unique=True)
+    path = models.CharField(max_length=255,unique=True)
+    vTime = models.TimeField()
+    inputTime = models.DateTimeField()
+
+    class Meta:
+        db_table = 'tVideo'    # 自定义表名
