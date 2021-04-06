@@ -68,8 +68,7 @@
                                 搜索结果
                             </div>
                             {% for result in results %}
-                                <div class="ui segment m-result">
-                                    <input type="hidden" value="{{ result }}" id="resVideo">
+                                <div class="ui segment m-result" data-result="{{ result }}">
                                     <div class="ui grid">
                                         <div class="eight wide column">
                                             剧名：{{ result.video_obj.name }}
@@ -97,30 +96,31 @@
                         <!-- 显示点击出现的可能的结果 -->
                         <div class="ui segments">
                             <div class="ui segment">
-                                <video id="myVideo" src="" width="100%" height="90%" controls>
+                                <input type="hidden" id="currentTime" value="{{ results.0.frame_time }}">
+                                <video id="myVideo" src="{{ results.0.video_obj.path }}" width="100%" height="90%" controls>
 
                                 </video>
                             </div>
                             <div class="ui segment">
-                                <h3>剧名：<span id="name"></span></h3>
+                                <h3>剧名：<span id="name">{{ results.0.video_obj.name }}</span></h3>
                                 <hr style="border:1px silver dotted"/>
                                 <br/>
-                                相似度：<span id="similar"></span>
+                                相似度：<span id="similar">{{ results.0.imgScore }} %</span>
                                 <br/>
                                 <br/>
-                                导演：<span id="director"></span>
+                                导演：<span id="director">{{ results.0.video_obj.director }}</span>
                                 <br/>
                                 <br/>
-                                主演：<span id="starts"></span>
+                                主演：<span id="starts">{{ results.0.video_obj.starts }}</span>
                                 <br/>
                                 <br/>
-                                总集数：<span id="allNumber"></span>
+                                总集数：<span id="allNumber">{{ results.0.video_obj.allNumber }}</span>
                                 <br/>
                                 <br/>
-                                所在集数：<span id="number"></span>
+                                所在集数：<span id="number">{{ results.0.video_obj.number }}</span>
                                 <br/>
                                 <br/>
-                                所在时间：<span id="sTime"></span>
+                                所在时间：<span id="sTime">{{ results.0.sTime }}</span>
                             </div>
                         </div>
                     </div>
