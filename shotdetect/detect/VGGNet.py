@@ -1,26 +1,26 @@
 from keras.applications.vgg16 import VGG16
-from keras.applications.vgg16 import preprocess_input as preprocess_input_vgg
+from keras.applications.vgg16 import preprocess_input
 from keras.preprocessing import image
-from numpy import linalg as LA
+from numpy import linalg
 import numpy as np
 
 class VGGNet:
-    def __init__(self):
-        self.input_shape = (224,224,3)
-        self.weight = 'imagenet'
-        self.pooling = 'max'
-        self.model_vgg = VGG16(weights=self.weight,
-                               input_shape=(self.input_shape[0],self.input_shape[1],self.input_shape[2]),
-                               pooling=self.pooling,include_top=False)
-        self.model_vgg.predict(np.zeros((1,224,224,3)))
+    def __init__(self,num):
+        self.num = num
+        self.model = VGG16(weights='imagenet',
+                               input_shape=(self.num,self.num,3),
+                               pooling='max',include_top=False)
+        self.model.predict(np.zeros((1,self.num,self.num,3)))
 
-    # 提取vgg16最后一层卷积特征
-    def vgg_extract_feat(self,img_path):
-        img = image.load_img(img_path,target_size=(self.input_shape[0],self.input_shape[1]))
+    # 提取图像特征
+    def extractFeat(self,path):
+        # 对输入图片进行预处理
+        img = image.load_img(path,target_size=(self.num,self.num))
         img = image.img_to_array(img)
-        img = np.expand_dims(img,axis=0)
-        img = preprocess_input_vgg(img)
-        feat = self.model_vgg.predict(img)
-        print(feat.shape)
-        norm_feat = feat[0] / LA.norm(feat[0])
-        return norm_feat
+        img = np.expand_dims(img,axis=0)    # 拓展维度
+        img = preprocess_input(img)    # 图像预处理，RGB->BGR，再减去平均值
+        # 提取特征
+        feat = self.model.predict(img)
+        # 特征/范数，使用余弦相似度计算
+        normFeat = feat[0] / linalg.norm(feat[0])
+        return normFeat

@@ -2,6 +2,7 @@ import ast
 import json
 import os
 import re
+from skimage import io
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
 from django.shortcuts import render, redirect
@@ -38,6 +39,7 @@ def search(req):
 
     picName = req.POST.get("picName", None)
     picture = req.FILES.get("picture", None)
+
     fileName = upload(picName, picture)  # 上传图片
 
     # 查询结果
@@ -61,7 +63,7 @@ def search(req):
         # 相似度变为百分比形式
         result["imgScore"] = result["imgScore"]*100
 
-    return render(req, "index.html", {"picName": picName, "picture":picture,"path": fileName, "results": results})
+    return render(req, "index.html", {"picName": picName, "find":True,"path": fileName, "results": results})
 
 
 # 显示右边详情页面
@@ -104,15 +106,22 @@ def timeConvert(size):
         tim_srt = '%02d:%02d:%02d' % (hour, mine, second)
         return tim_srt
 
-# 本地图片上传
+# 图片上传
 def upload(name, file):
-    extraName = getExtra(name)
+    if str.startswith(name,"https") or str.startswith(name,"http"):
+        extraName = ".jpg"    # 网络图片上传
+    else:
+        extraName = getExtra(name)
     fileName = "/queryPic/" + str(uuid.uuid4()) + extraName
-    with open("statics" + fileName, "wb") as image_file:  # 使用二进制的方式打开新建文件，不改变文件，直接写入
-        for content in file:
-            image_file.write(content)
-    return fileName
 
+    if file == None:    # 网络图片上传
+        image = io.imread(name)
+        io.imsave("statics"+fileName, image)
+    else:
+        with open("statics" + fileName, "wb") as image_file:  # 使用二进制的方式打开新建文件，不改变文件，直接写入
+            for content in file:
+                image_file.write(content)
+    return fileName
 
 # 登录
 def login(req):
@@ -128,7 +137,7 @@ def showPageable(req,object_list):
     objects = []
 
     # 将数据按照规定每页显示 10 条, 进行分割
-    paginator = Paginator(object_list, 5)
+    paginator = Paginator(object_list, 3)
 
     if req.method == "GET":
         # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
